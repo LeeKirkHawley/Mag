@@ -47,12 +47,21 @@
     <Compile Include="MagControlWindow.Designer.cs">
       <DependentUpon>MagControlWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MagSmartWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MagSmartWindow.Designer.cs">
+      <DependentUpon>MagSmartWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MagControlWindow.resx">
       <DependentUpon>MagControlWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MagSmartWindow.resx">
+      <DependentUpon>MagSmartWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
