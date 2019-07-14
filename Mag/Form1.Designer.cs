@@ -57,9 +57,9 @@
             // 
             // magControlWindow1
             // 
-            this.magControlWindow1.Location = new System.Drawing.Point(156, 93);
+            this.magControlWindow1.Location = new System.Drawing.Point(12, 53);
             this.magControlWindow1.Name = "magControlWindow1";
-            this.magControlWindow1.Size = new System.Drawing.Size(389, 93);
+            this.magControlWindow1.Size = new System.Drawing.Size(256, 55);
             this.magControlWindow1.TabIndex = 1;
             // 
             // Form1

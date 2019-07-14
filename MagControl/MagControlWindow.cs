@@ -20,6 +20,7 @@ namespace MagControl
             this.pictureBox.Image = image;
 
             smartWindow = new MagSmartWindow(image, this);
+
         }
 
         public MagControlWindow()
@@ -30,7 +31,7 @@ namespace MagControl
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e) {
-            if (smartWindow.Visible == true)
+            if (smartWindow == null || smartWindow.Visible == true)
                 return;
 
             // cords here are relative to this window
@@ -38,6 +39,7 @@ namespace MagControl
                 Console.WriteLine("Showing smartWindow - MagControlWindow " + e.X + " " + e.Y);
 
                 smartWindow.Show();
+
                 smartWindow.TopMost = true;
                 smartWindow.Capture = true;
             }

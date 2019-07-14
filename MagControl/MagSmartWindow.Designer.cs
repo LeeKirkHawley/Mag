@@ -54,6 +54,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MagSmartWindow";
             this.Text = "MagSmartWindow";
+            this.Load += new System.EventHandler(this.MagSmartWindow_Load);
             this.VisibleChanged += new System.EventHandler(this.VisibleChangedHandler);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownHandler);
             this.MouseLeave += new System.EventHandler(this.MouseLeaveHandler);

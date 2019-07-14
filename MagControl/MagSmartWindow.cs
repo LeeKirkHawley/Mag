@@ -17,15 +17,15 @@ namespace MagControl {
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
 
 
-        public Control parent { get; set; }
+        public Control _parent { get; set; }
 
-        public Image currentImage { get; set; }
-        public Size currentImageSize { get; set; } // size of the image we're going to draw
+        public Image _currentImage { get; set; }
+        public Size _currentImageSize { get; set; } // size of the image we're going to draw
         float scaleRatio { // original image / image as drawn
             get {
-                if (currentImage == null || currentImageSize.Width == 0)
+                if (_currentImage == null || _currentImageSize.Width == 0)
                     return 0;
-                return currentImage.Size.Width / currentImageSize.Width;
+                return _currentImage.Size.Width / _currentImageSize.Width;
             }
         }
 
@@ -34,12 +34,24 @@ namespace MagControl {
         Point currentImageOrigin = new Point();
 
         public MagSmartWindow(Image image, Control parent) {
+            _parent = parent;
+
+            this.StartPosition = FormStartPosition.Manual;
+
             InitializeComponent();
+
+            _currentImage = image;
+
+            this.Width = parent.Width * 2;
+            this.Height = parent.Height * 2;
+
+            Size size = image.Size;
+            size.Width *= 2;
+            size.Height *= 2;
+            _currentImageSize = size;
 
             Application.AddMessageFilter(this);
 
-            currentImage = image;
-            currentImageSize = image.Size;
             currentImageOrigin = new Point(0, 0); // relative to window
         }
 
@@ -67,7 +79,7 @@ namespace MagControl {
 
             int delta = m.WParam.ToInt32() >> 16;
 
-            Size size = currentImageSize;
+            Size size = _currentImageSize;
             if (delta < 0) {
                 size.Width = (int)((float)size.Width * .9);
                 size.Height = (int)((float)size.Height *  .9);
@@ -77,7 +89,7 @@ namespace MagControl {
                 size.Height = (int)((float)size.Height * 1.1);
             }
 
-            currentImageSize = size;
+            _currentImageSize = size;
 
             magSmartPictureBox.Invalidate();
         }
@@ -101,15 +113,11 @@ namespace MagControl {
             return coords;
         }
 
-        // magSmartPicture event handlers
-
         private void magSmartPictureBox_Paint(object sender, PaintEventArgs e) {
-            //Console.WriteLine("Painting smartWindow - MagSmartWindow");
-
             // get center of window
             Point windowCenter = new Point(this.Size.Width / 2, this.Size.Height / 2);
 
-            Bitmap bmp = new Bitmap(currentImage, currentImageSize);
+            Bitmap bmp = new Bitmap(_currentImage, _currentImageSize);
 
             //Console.WriteLine("SmartWindow window origin " + currentImageOrigin.X + " " + currentImageOrigin.Y);
 
@@ -165,10 +173,23 @@ namespace MagControl {
 
         private void VisibleChangedHandler(object sender, EventArgs e) {
             if (Visible == true) {
-                Console.WriteLine("Showing smartWindow - MagSmartWindow ");
+                Point a = _parent.Location;
+                Point b = _parent.PointToScreen(_parent.Location);
+                Point c = _parent.PointToScreen(_parent.Parent.Location);
+                Point d = PointToScreen(Location);
+
+                Point loc = this.Location;
+                int ParentX = _parent.Left;
+                int ParentY = _parent.Top;
+
+                this.Location = new Point(_parent.Parent.Location.X + _parent.Location.X, _parent.Parent.Location.Y + _parent.Location.Y); ;
+
+                _parent.Hide();
+                Console.WriteLine("Showing smartWindow - MagSmartWindow " + Location.X + " " + Location.Y);
                 this.Capture = true;
             }
             else {
+                _parent.Show();
                 Console.WriteLine("Hiding smartWindow - MagSmartWindow ");
                 this.Capture = false;
             }
@@ -176,6 +197,16 @@ namespace MagControl {
 
         private void MouseLeaveHandler(object sender, EventArgs e) {
             this.HideMe();
+        }
+
+        private void MagSmartWindow_Load(object sender, EventArgs e) {
+            //Point s = _parent.PointToScreen(_parent.Location);
+            //this.Location = s;
+            //this.Location = new Point(_parent.Location.X, _parent.Location.Y);
+            Point a = Parent.Location;
+            Point b = Parent.PointToScreen(Parent.Location);
+
+            this.Location = new Point(0, 0);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Mag {
         public Form1() {
             InitializeComponent();
 
-            LoadImage("C:\\Work\\Mag\\images\\Plant.jpg");
-            this.magControlWindow1.SetImage(loadedImage);
+            //LoadImage("C:\\Work\\Mag\\images\\Plant.jpg");
+            //this.magControlWindow1.SetImage(loadedImage);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e) {
